@@ -1,0 +1,74 @@
+/* Estilos globales */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+    padding: 0px;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+/* Estilo responsive para tabla */
+.tabla-responsive {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tabla-responsive th,
+  .tabla-responsive td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  @media (max-width: 768px) {
+    .tabla-responsive thead {
+      display: none;
+    }
+  
+    .tabla-responsive tr {
+      display: block;
+      margin-bottom: 10px;
+    }
+  
+    .tabla-responsive td {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+  
+    .tabla-responsive td::before {
+      content: attr(data-label);
+      font-weight: bold;
+    }
+  }
+  
+  /* Estilo para botones de paginación */
+  .paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    gap: 10px;
+  }
+  
+  .paginacion button {
+    padding: 8px 12px;
+    background-color: #425059;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .paginacion button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+    

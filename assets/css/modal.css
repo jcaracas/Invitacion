@@ -1,0 +1,99 @@
+/* Estilos para el modal de login (sin cambios) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .modal-contenido {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 450px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+  }
+  
+  .cerrar-modal,.cerrar-modal-login {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .cerrar-modal:hover,
+  .cerrar-modal:focus,
+  .cerrar-modal-login:hover,
+  .cerrar-modal-login:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .modal-contenido h2 {
+    color: #425059;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  
+  .modal-contenido label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .modal-contenido input[type=text],
+  .modal-contenido input[type=password],
+  .modal-contenido input[type=number],
+  .modal-contenido input[type=file] {
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  
+  .modal-contenido button[type=submit] {
+    width: 400px;
+    padding: 10px;
+    background-color: #425059;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  
+  .modal-contenido button[type=submit]:hover {
+    background-color: #2f3b42;
+  }
+  
+  @media (max-width: 468px) {
+    .modal-contenido {
+      width: 90%;
+    }
+  
+    .modal-contenido input[type=text],
+    .modal-contenido input[type=password] {
+      width: 90%;  }
+  
+    .modal-contenido button[type=submit] {
+      width: 90%;
+    }
+  }

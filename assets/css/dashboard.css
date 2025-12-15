@@ -1,0 +1,248 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f2f2f2;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #425059;
+    color: #fff;
+    padding: 10px 20px;
+  }
+  
+  main {
+    margin-top: 60px;
+    padding: 20px 20px 0 20px;
+  }
+
+  h1{
+    margin: 10px 0;
+  }
+  
+  section {
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  section #resumen {
+    margin-top: 50px;
+  }
+
+  .chat-container {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-top: 20px;
+  }
+  
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #A6785D;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+  
+
+  
+  .card-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    background-color: #A6785D;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1 1 150px;
+    text-align: center;
+  }
+
+  .btn {
+    background-color: #425059;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+/* Estilos base de los botones */
+.btn-responsive {
+    display: inline-flex; /* Para alinear icono y texto si es necesario */
+    align-items: center;
+    justify-content: center; /* Centrar contenido */
+    padding: 0.5rem 1rem; /* Ajusta el padding según necesites */
+    /* Otros estilos de tus botones (.btn, .btn-success, .mb-2) */
+}
+
+/* Ocultar el texto en pantallas pequeñas y mostrar el icono */
+@media (max-width: 768px) { /* Ajusta el ancho máximo según tu breakpoint responsive */
+    .btn-responsive {
+        width: 50px; /* Ajusta si necesitas un ancho fijo */
+        padding: 0.5rem; /* Reduce el padding para el icono */
+        text-indent: -9999px; /* Ocultar el texto moviéndolo fuera de la pantalla */
+        overflow: hidden; /* Asegurar que el texto oculto no cause problemas */
+        align-items: center;
+    }
+
+    /* Mostrar el icono para el botón de descarga */
+    #btn-descargar-excel::before {
+        content: '\f1c3'; /* Icono de archivo Excel de Font Awesome (ejemplo) */
+        font-family: 'Font Awesome 5 Free'; /* Asegúrate de incluir la librería y el estilo correcto */
+        font-weight: 400; /* O 900 para el estilo Solid */
+        font-size: 1.5rem; /* Ajusta el tamaño del icono */
+        text-indent: 0; /* Revertir la ocultación del texto para mostrar el icono */
+        margin: auto;
+    }
+
+    /* Mostrar el icono para el botón de correo */
+    #btn-enviar-excel::before {
+        content: '\f0e0'; /* Icono de correo de Font Awesome (ejemplo) */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 400; /* O 900 para el estilo Solid */
+        font-size: 1.5rem;
+        text-indent: 0;
+        margin: auto;
+    }
+    #btn-asignar-mesas::before {
+        content: '\f6c0'; /* Icono de silla de Font Awesome (ejemplo) */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 400; /* O 900 para el estilo Solid */
+        font-size: 1.5rem;
+        text-indent: 0;
+        margin: auto;
+    } 
+}
+
+  .cerrar-sesion {
+    background-color: #c59d9c;
+    font-style: bold;
+    border-radius: 10px;
+    text-decoration: #f2f2f2;
+  } 
+  
+  .titulos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    text-align: center;
+  }
+
+  .centrado {
+    text-align: center;
+  }
+  
+  /* Estilo para botones de paginación */
+  .paginacion {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15px;
+    gap: 10px;
+  }
+  
+  .paginacion button {
+    padding: 8px 12px;
+    background-color: #425059;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .paginacion button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+
+
+  @media (max-width: 768px) {
+    
+    .card-container {
+      flex-direction: column;
+    }
+
+    .acciones {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+
+    main {
+      margin-top: 80px;
+      padding: 0 20px;
+    }
+
+    .card {
+      flex: 1 1 100%;
+      font-size: 20px;
+      padding: 10px;
+    }
+
+    .btn {
+      font-size: 12px;
+      padding: 10px;
+    }
+
+    .mensaje {
+      font-size: 15px;
+    }
+
+    .ocultar {
+        display: none;
+    }   
+
+  }
+
+  input[type="file"] {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px; /* Tamaño adecuado para móviles */
+}
+
+@media (max-width: 768px) {
+    input[type="file"] {
+        font-size: 16px;
+        max-width: 297px; /* Ajusta según el diseño móvil */
+    }
+}

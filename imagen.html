@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación de Imagen</title>
+    <style>
+        body {
+            height: 200vh; /* Para permitir el scroll */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            
+        }
+
+        .image {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            right: -370px;
+            transition: transform 1.5s ease-in-out;
+            border-radius: 50%;
+            border: 15px solid #9AA697; /* Borde agregado con color rojo */
+        }
+        .image1 {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            right: -50px;
+            transition: transform 1.5s ease-in-out;
+            border-radius: 50%;
+            border: 15px solid #9AA697; /* Borde agregado con color rojo */
+        }
+        img{
+            border: 20px;
+            border-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="target">
+        <img src="/Invitacion/assets/img/tendencias1.jpg" alt="Imagen" class="image" id="image">
+    </div>
+    <div class="container" id="target">
+        <img src="/Invitacion/assets/img/tendencias2.jpg" alt="Imagen" class="image1" id="image">
+    </div>
+
+    <script>
+        document.addEventListener("scroll", function () {
+            const image = document.getElementById("image");
+            const target = document.getElementById("target");
+            const rect = target.getBoundingClientRect();
+            
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                image.style.transform = "translateX(-100vw) rotate(360deg)";
+            }
+        });
+    </script>
+</body>
+</html>

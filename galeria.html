@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Álbum de Boda</title>
+    <link rel="stylesheet" href="./assets/css/galeria.css">
+    <link rel="stylesheet" href="/Invitacion/assets/css/navbar.css">
+    <script src="https://kit.fontawesome.com/c6307cf0cf.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav id="navbar" class="navbar" style="display: none;">
+        <div class="navbar-container">
+          <span class="navbar-logo">Foto del Evento</span>
+            <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+            <ul class="navbar-menu" id="navbar-menu">
+                <li id="indexmenu" style="display: none;"><a href="./index.html">Mi Evento</a></li>
+                <li id="galeriamenu" style="display: none;"><a href="galeria.html">Galería</a></li>
+                <li id="confirmamenu" style="display: none;"><a href="./dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Álbum de Nuestra Boda</h1>
+            <p>Comparte tus fotos con nosotros</p>
+        </header>
+
+        <div class="upload-section">
+            <form id="uploadForm">
+                <div class="file-upload">
+                    <label for="photos">Selecciona fotos (máx. 10)</label>
+                    <input type="file" id="photos" name="photos" multiple accept="image/*" max="10">
+                    <div class="preview-container" id="previewContainer"></div>
+                </div>
+                <button type="submit" id="uploadBtn">Subir Fotos</button>
+            </form>
+        </div>
+
+        <div class="gallery-section">
+            <h2>Nuestro Álbum</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+    </div>
+
+    <!-- Modal para el carrusel -->
+    <div class="modal" id="imageModal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
+        </div>
+    </div>
+    <script src="./assets/js/galeria.js"></script>
+    <script src="/Invitacion/assets/js/login.js"></script>
+    <script>
+        const navbar = document.getElementById('navbar');
+        const loginButton = document.getElementById('btn-login-flotante');
+        const indexmenu = document.getElementById('indexmenu');
+        const geleriamenu = document.getElementById('galeriamenu');
+        const dashboardmenu = document.getElementById('confirmamenu');
+        
+    // Función para mostrar u ocultar elementos según sesión
+    function actualizarUIporSesion() {
+        const tipoUsuario = localStorage.getItem("tipo_usuario"); // Valor por defecto "invitado"
+        const token = localStorage.getItem("token");
+        
+            if (!token || !tipoUsuario) {
+                navbar.style.display = "none";
+                return;
+            }
+            if (token && tipoUsuario && typeof tipoUsuario === "string" && tipoUsuario !== "Invitado") {
+                navbar.style.display = "flex";
+                indexmenu.style.display = "flex";
+                dashboardmenu.style.display = "flex";
+                return;
+            } 
+            if (token && tipoUsuario && typeof tipoUsuario === "string" && tipoUsuario === "Invitado") {
+                navbar.style.display = "none";
+                loginButton.style.display = "none";
+            }    
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            actualizarUIporSesion();
+        });
+    
+      </script>
+
+</body>
+</html>

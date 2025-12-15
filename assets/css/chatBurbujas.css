@@ -1,0 +1,149 @@
+:root {
+  --chat-teal: #4FC3F7;
+  --chat-yellow: #FFD54F;
+  --chat-purple: #BA68C8;
+  --chat-red: #E57373;
+}
+
+/* CONTENEDOR GRID DINÁMICO */
+.chat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+  padding: 20px;
+}
+
+/* BURBUJAS DE MENSAJE */
+.chat-bubble {
+  background-color: var(--chat-yellow);
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.chat-bubble:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.chat-bubble strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  text-transform: capitalize;
+  color: #000;
+}
+
+/* METADATA DEL MENSAJE */
+.chat-meta {
+  font-size: 11px;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* ACCIONES DE LIKE/FAV */
+.chat-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.chat-teal { background-color: var(--chat-teal); color: #fff; }
+.chat-yellow { background-color: var(--chat-yellow); color: #000; }
+.chat-purple { background-color: var(--chat-purple); color: #fff; }
+.chat-red { background-color: var(--chat-red); color: #fff; }
+
+/* BOTONES */
+button {
+  background: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+}
+
+.mensaje{
+  min-height: 84px;
+}
+
+.heart {
+  font-size: 20px;
+  color: #f80c0c;
+  transition: color 0.2s ease;
+}
+
+.chat-actions i:hover {
+  transform: scale(1.5);
+}
+
+.like {
+  font-size: 20px;
+  color: #2e2860;
+  transition: color 0.2s ease;
+}
+
+/* 🟢 RESPONSIVE */
+@media (max-width: 768px) {
+  .chat-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .chat-bubble {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .chat-bubble strong {
+    font-size: 12.5px;
+  }
+
+  .chat-meta {
+    font-size: 10px;
+  }
+
+  .chat-actions button {
+    font-size: 12px;
+    padding: 3px 5px;
+  }
+
+  .mensaje{
+    min-height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .chat-bubble {
+    padding: 10px 12px;
+    font-size: 12.5px;
+  }
+
+  .chat-bubble strong {
+    font-size: 12px;
+  }
+
+  .chat-meta {
+    font-size: 9px;
+  }
+
+  .chat-actions button {
+    font-size: 11px;
+    padding: 2px 4px;
+  }
+}

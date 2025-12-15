@@ -1,0 +1,19 @@
+/*
+    style.css
+*/
+
+body {
+    margin: 0; /* Elimina el margen por defecto del body */
+    overflow: hidden; /* Evita barras de desplazamiento */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Asegura que ocupe todo el alto de la ventana */
+    background-color: #ffffff; /* Fondo blanco, como en tu imagen */
+}
+
+/* Estilo para el canvas generado por p5.js */
+canvas {
+    display: block; /* Importante para evitar un pequeño espacio debajo del canvas */
+    border: none;
+}

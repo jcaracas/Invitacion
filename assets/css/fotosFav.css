@@ -1,0 +1,195 @@
+.galeria-polaroid {
+    padding: 40px;
+    background: url('/imagenes/fondo-madera.jpg') repeat; /* fondo tipo madera */
+    text-align: center;
+    
+}
+
+.galeria-polaroid h2 {
+    color: #732817;
+    font-family: 'Georgia', serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.contenedor-fotos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  
+}
+
+.foto-favorita {
+  background: white;
+  padding: 10px 10px 30px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+  transform: rotate(calc(-5deg + 10deg * random())); /* JS se encargará del giro */
+  transition: transform 0.3s ease;
+  position: relative;
+  width: 220px;
+}
+
+@media (max-width: 768px) {
+  .contenedor-fotos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .foto-favorita {
+    width: 100%;
+    padding: 8px 8px 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    transform: none; /* Elimina el giro en dispositivos móviles */
+  }
+  .ocultarText {
+    display: none; /* Oculta el texto en dispositivos móviles */
+  }
+}
+
+.foto-favorita:hover {
+    transform: scale(1.5);
+    z-index: 1;
+}
+
+.foto-favorita img {
+    width: 100%;
+    max-height: 250px;
+    border: 4px solid white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.botones-accion {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+}
+
+.btn-descargar {
+    background-color: #D9B4A7;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-descargar:hover {
+    background-color: #A6785D;
+}
+
+.paginacion-favoritas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .btn-pagina {
+    background-color: #D9B4A7;
+    color: #732817;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-pagina:hover {
+    background-color: #A6785D;
+    color: #fff;
+  }
+  
+  .pagina-info {
+    font-family: 'Georgia', serif;
+    color: #732817;
+    font-size: 14px;
+  }
+  
+  .oculto {
+    display: none;
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+  
+/* Estilos para el efecto de volteo de tarjeta */
+
+#Card-3D {
+    padding: 40px;
+    background: url('/imagenes/fondo-madera.jpg') repeat; /* fondo tipo madera */
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+  .card-container {
+    perspective: 1000px; /* Para el efecto 3D */
+    display: inline-block;
+  }
+  
+  .card {
+    position: relative;
+    width: 220px;
+    height: 280px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Oculta el reverso cuando no está de frente */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  
+  .card-front {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-front img {
+    max-width: 80%;
+    border-radius: 8px;
+  }
+  
+  .card-back {
+    background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: rotateY(180deg);
+    padding: 15px;
+    text-align: center;
+  }
+  
+  /* Estado al pasar el mouse */
+  .card-container:hover .card {
+    transform: rotateY(180deg);
+  }
+  
+  .card.flipped {
+    transform: rotateY(180deg);
+  }

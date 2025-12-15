@@ -1,0 +1,9 @@
+.DS_Store
+# Ignora todo en img
+assets/img/*
+assets/img/video1.mp4
+assets/img/video2.mp4
+# Pero incluye .gitkeep
+!assets/img/.gitkeep
+node_modules/
+.env

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Invitados</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/Invitacion/assets/css/navbar.css">
+  <link rel="stylesheet" href="/Invitacion/assets/css/invitacion.css">
+</head>
+<body>
+    <nav id="navbar" class="navbar" style="display: none;">
+        <div class="navbar-container">
+        <span class="navbar-logo">Juan y Nahir</span>
+        <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+        <ul class="navbar-menu" id="navbar-menu">
+            <li id="indexmenu" style="display: none;"><a href="./index.html">Mi Evento</a></li>
+            <li id="mensajesmenu" style="display: none;"><a href="/mensajes.html">Mensajes</a></li>
+            <li id="galeriamenu" style="display: none;"><a href="galeria.html">Galería</a></li>
+            </ul>
+        </div>
+    </nav>
+
+  <div class="container mt-4">
+    <h2 class="mb-4">Invitados al Evento</h2>
+    <button id="btn-descargar-excel" class="btn btn-success mb-2">Descargar Excel</button>
+    <button id="btn-enviar-excel" class="btn btn-success mb-2">Enviar al correo</button>
+
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table " id="tabla-invitados">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Acompañantes</th>
+              <th>Estado</th>
+              <th>Comentario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Aquí se cargan los invitados dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Controles de paginación -->
+      <div class="paginacion">
+        <button id="btnAnterior" disabled>⏮ Anterior</button>
+        <span id="paginaActual">Página 1</span>
+        <button id="btnSiguiente">Siguiente ⏭</button>
+      </div>
+      
+  </div>
+
+  <script src="/Invitacion/assets/js/invitados.js"></script>
+  <script src="/Invitacion/assets/js/login.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    const navbar = document.getElementById('navbar');
+    const loginButton = document.getElementById('btn-login-flotante');
+    const indexmenu = document.getElementById('indexmenu');
+    const geleriamenu = document.getElementById('galeriamenu');
+    const confirmacionesMenu = document.getElementById('confirmamenu');
+    const mensajesmenu = document.getElementById('mensajesmenu');
+
+// Función para mostrar u ocultar elementos según sesión
+function actualizarUIporSesion() {
+    const tipoUsuario = localStorage.getItem("tipo_usuario"); // Valor por defecto "invitado"
+    const token = localStorage.getItem("token");
+    
+        if (!token || !tipoUsuario) {
+            navbar.style.display = "none";
+            return;
+        }
+        if (token && tipoUsuario && typeof tipoUsuario === "string" && tipoUsuario !== "Invitado") {
+            navbar.style.display = "flex";
+            galeriamenu.style.display = "flex";
+            mensajesmenu.style.display = "flex";
+            indexmenu.style.display = "flex";
+            return;
+        } 
+        if (token && tipoUsuario && typeof tipoUsuario === "string" && tipoUsuario === "Invitado") {
+            navbar.style.display = "none";
+            loginButton.style.display = "none";
+        }    
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        actualizarUIporSesion();
+    });
+
+  </script>
+
+
+</body>
+</html>
