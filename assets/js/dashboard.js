@@ -1,6 +1,6 @@
 const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 const tipoUsuario = localStorage.getItem("tipo_usuario") || sessionStorage.getItem("tipo_usuario");
-const API_URL = "http://127.0.0.1:5000/api"; // Cambia a tu URL real
+const API_URL = "https://webiinvitefront.onrender.com/api"; // Cambia a tu URL real
 const codigo = localStorage.getItem("codigo") ;
 const cantPorPagina = 5;
 const formRegalo = document.getElementById('registro-regalo-form');
