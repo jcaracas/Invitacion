@@ -1,7 +1,110 @@
-const token = localStorage.getItem("token");
-const tipoUsuario = localStorage.getItem("tipo_usuario");
+const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+const tipoUsuario = localStorage.getItem("tipo_usuario") || sessionStorage.getItem("tipo_usuario");
 const API_URL = "http://127.0.0.1:5000/api"; // Cambia a tu URL real
-        
+const codigo = localStorage.getItem("codigo") ;
+const cantPorPagina = 5;
+const formRegalo = document.getElementById('registro-regalo-form');
+const cerrarModalBtn = document.querySelector('.cerrar-modal');
+const modal = document.getElementById("modal-regalo");
+const imagenInput = document.getElementById('imagen');
+const mensajeRegistro = document.getElementById('mensaje-registro');   
+const listaRegalos = document.getElementById("lista-regalos");
+const listaRegalosContainer = document.getElementById("lista-regalos-container");
+const overlay = document.getElementById("loginOverlay");
+
+let paginaActual = 1;
+let invitadosTotales = [];
+let listaTotales = []; // Variable para almacenar la lista de regalos
+
+
+
+async function iniciarAplicacion() {
+  console.log("✅ Sesión activa, iniciando app");
+  if (!token) return;
+
+  obtenerResumen();
+  obtenerInvitados();
+  obtenerNotificaciones();
+  obtenerListaRegalos();
+
+  // aquí puedes habilitar botones, menús, etc.
+}
+
+
+
+async function obtenerResumen() {        
+  try{
+    const res = await fetch(`${API_URL}/invitados/estado/${codigo}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const resumen = await res.json();
+    document.getElementById("confirmados").textContent = `Confirmados: ${resumen.Confirmado || 0}`;
+    document.getElementById("pendientes").textContent = `Pendientes: ${resumen.Pendiente || 0}`;
+    document.getElementById("rechazados").textContent = `Rechazados: ${resumen.Rechazado || 0}`;
+  }catch (err) {
+    alert("Error al cargar resumen linea 40");
+    console.error(err);
+  }
+}
+
+async function obtenerInvitados() {
+  try {
+    const res = await fetch(`${API_URL}/invitados/evento/${codigo}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      } 
+    });
+
+    const invitadosTotales = await res.json();
+    window.invitadosGlobal = invitadosTotales;
+
+    mostrarPagina(1);        // Usa invitadosGlobal para paginación
+    cargarMensajesChat();   // Usa invitadosGlobal para chat
+  } catch (err) {
+    console.error("Error al cargar datos:", err);
+    alert("Error al cargar invitados y chat");
+  }
+}
+
+
+async function obtenerNotificaciones() {
+  // Lógica provisional
+  const notis = [
+    "No hay nuevas notificaciones"
+  ];
+  const ul = document.getElementById("lista-notificaciones");
+  ul.innerHTML = "";
+  notis.forEach(n => {
+    const li = document.createElement("li");
+    li.textContent = n;
+    ul.appendChild(li);
+  });
+}
+
+async function obtenerListaRegalos() {
+  try {
+    const res = await fetch(`${API_URL}/regalos/evento/${codigo}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    listaTotales = await res.json();
+    paginarLista(1); // Mostrar la primera página
+  } catch (err) {
+    alert("Error al cargar lista de regalos linea 94");
+    console.error(err);
+  }
+}
+
 function getRandomBubbleClass(index) {
   const colors = ['chat-teal', 'chat-yellow', 'chat-purple', 'chat-red'];
   return colors[index % colors.length];
@@ -41,6 +144,51 @@ function cargarMensajesChat() {
   });
 }
 
+function mostrarPagina(pagina) {
+    const cantPorPagina = 5;
+    invitadosTotales = window.invitadosGlobal; // Asegúrate de que esta variable esté definida
+    paginaActual = pagina;
+    const inicio = (pagina - 1) * cantPorPagina;
+    const fin = inicio + cantPorPagina;
+    const invitadosPagina = invitadosTotales.slice(inicio, fin);
+    
+    const tbody = document.querySelector("#tabla-invitados tbody");
+    tbody.innerHTML = "";
+  
+    invitadosPagina.forEach(inv => {
+        const row = document.createElement('tr');
+    
+        const nombreCell = document.createElement('td');
+        nombreCell.textContent = inv.nombre;
+        row.appendChild(nombreCell);
+    
+        const acompanantesCell = document.createElement('td');
+        acompanantesCell.textContent = inv.acompanantes;
+        row.appendChild(acompanantesCell);
+    
+        const estadoCell = document.createElement('td');
+        estadoCell.classList.add('centrado'); // Clase para aplicar estilos CSS (puedes definirla en tu CSS)
+        const botonEstado = document.createElement('button');
+        botonEstado.textContent = inv.estado_confirmacion;
+        botonEstado.classList.add('btn'); // Clase para aplicar estilos CSS (puedes definirla en tu CSS)
+        botonEstado.dataset.invitacionId = inv.id; // Asumiendo que cada invitado tiene un 'id' único
+    
+        botonEstado.addEventListener('click', () => {
+            realizarAccionInvitacion(inv.id, inv.estado_confirmacion);
+        });
+    
+        estadoCell.appendChild(botonEstado);
+        row.appendChild(estadoCell);
+    
+        tbody.appendChild(row);
+    });
+
+    // Actualizar botones y texto
+    document.getElementById("paginaActual").textContent = `Página ${pagina}`;
+    document.getElementById("btnAnterior").disabled = pagina === 1;
+    document.getElementById("btnSiguiente").disabled = fin >= invitadosTotales.length;
+  
+}
 
 function realizarAccionInvitacion(invitacionId, estadoActual) {
   console.log(`Botón clickeado para la invitación con ID: ${invitacionId}, estado actual: ${estadoActual}`);
@@ -98,387 +246,256 @@ async function toggleFavorito(invitadoId) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-   const formRegalo = document.getElementById('registro-regalo-form');
-    const cerrarModalBtn = document.querySelector('.cerrar-modal');
-    const modal = document.getElementById("modal-regalo");
-    const imagenInput = document.getElementById('imagen');
-    const mensajeRegistro = document.getElementById('mensaje-registro');    
+function paginarLista(pagina) {
+  paginaActual = pagina;
+  const inicio = (pagina - 1) * cantPorPagina;
+  const fin = inicio + cantPorPagina;
+  const regalosPagina = listaTotales.slice(inicio, fin);
+
+  const tbody = document.querySelector("#regalos tbody");
+  tbody.innerHTML = "";
+
+  regalosPagina.forEach(inv => {
+    const row = `<tr>
+      <td>${inv.titulo}</td>
+      <td class="ocultar">${inv.enlace}</td>
+      <td class="centrado">${inv.estado}</td>
+    </tr>`;
+    tbody.innerHTML += row;
+  });
+  /*/ Actualizar botones y texto
+  document.getElementById("paginaActual").textContent = `Página ${pagina}`;
+  document.getElementById("btnAnterior").disabled = pagina === 1;
+  document.getElementById("btnSiguiente").disabled = fin >= invitadosTotales.length;*/
+
+}
+
+// Abrir modal de registro de regalo
+document.getElementById("agregar-regalo").addEventListener("click", () => {
+    modal.style.display = "flex";
+});
+
+// Cerrar modal de registro de regalo
+cerrarModalBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+// Registrar nuevo regalo
+formRegalo.addEventListener('submit', async (event) => {
+  event.preventDefault();
   
-    if (!token || tipoUsuario === "Invitado") {
-      alert("Acceso restringido.");
-      window.location.href = "index.html";
-      return;
-    }
+  const titulo = document.getElementById('nombre').value.trim();
+  const enlace = document.getElementById('link').value.trim();
+  const imagenArchivo = imagenInput.files[0]; // Obtener el archivo de imagen seleccionado
   
-    const codigo = localStorage.getItem("codigo") ; 
-    let paginaActual = 1;
-    let invitadosTotales = [];
-    let listaTotales = []; // Variable para almacenar la lista de regalos
-    const listaRegalos = document.getElementById("lista-regalos");
-    const listaRegalosContainer = document.getElementById("lista-regalos-container");
-    const cantPorPagina = 5;
+  try {
+    const formData = new FormData();
+    formData.append('titulo', titulo);
+    formData.append('enlace', enlace);
+    formData.append('imagen', imagenArchivo); // Append el archivo de imagen
+    formData.append('codigo', codigo); // Append el código del evento
 
-  
-    async function obtenerResumen() {
-      try{
-        const res = await fetch(`${API_URL}/invitados/estado/${codigo}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const resumen = await res.json();
-        document.getElementById("confirmados").textContent = `Confirmados: ${resumen.Confirmado || 0}`;
-        document.getElementById("pendientes").textContent = `Pendientes: ${resumen.Pendiente || 0}`;
-        document.getElementById("rechazados").textContent = `Rechazados: ${resumen.Rechazado || 0}`;
-      }catch (err) {
-        alert("Error al cargar resumen linea 40");
-        console.error(err);
-      }
-    }
-  
-    async function obtenerInvitados() {
-      try {
-        const res = await fetch(`${API_URL}/invitados/evento/${codigo}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          } 
-        });
-    
-        const invitadosTotales = await res.json();
-        window.invitadosGlobal = invitadosTotales;
-       
-        mostrarPagina(1);        // Usa invitadosGlobal para paginación
-        cargarMensajesChat();   // Usa invitadosGlobal para chat
-      } catch (err) {
-        console.error("Error al cargar datos:", err);
-        alert("Error al cargar invitados y chat");
-      }
-    }
-      
-  
-    async function obtenerNotificaciones() {
-      // Lógica provisional
-      const notis = [
-        "Invitado Juan confirmó su asistencia.",
-        "Se agregó un nuevo comentario de María.",
-        "Regalo agregado por José."
-      ];
-      const ul = document.getElementById("lista-notificaciones");
-      ul.innerHTML = "";
-      notis.forEach(n => {
-        const li = document.createElement("li");
-        li.textContent = n;
-        ul.appendChild(li);
-      });
-    }
-
-    async function obtenerListaRegalos() {
-        try {
-          const res = await fetch(`${API_URL}/regalos/evento/${codigo}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          });
-      
-          listaTotales = await res.json();
-          paginarLista(1); // Mostrar la primera página
-        } catch (err) {
-          alert("Error al cargar lista de regalos linea 94");
-          console.error(err);
-        }
-      }
-  
-    document.getElementById("agregar-regalo").addEventListener("click", () => {
-        modal.style.display = "flex";
-    });
-  
-    cerrarModalBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    formRegalo.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        
-        const titulo = document.getElementById('nombre').value.trim();
-        const enlace = document.getElementById('link').value.trim();
-        const imagenArchivo = imagenInput.files[0]; // Obtener el archivo de imagen seleccionado
-        
-        try {
-            const formData = new FormData();
-            formData.append('titulo', titulo);
-            formData.append('enlace', enlace);
-            formData.append('imagen', imagenArchivo); // Append el archivo de imagen
-            formData.append('codigo', codigo); // Append el código del evento
-
-            const response = await fetch(`${API_URL}/regalos`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                    // No necesitas 'Content-Type': 'application/json' cuando envías FormData
-                },
-                body: formData, // Enviar el FormData en el cuerpo de la petición
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                mensajeRegistro.textContent = 'Regalo registrado exitosamente.';
-                mensajeRegistro.className = 'mensaje exito';
-                formRegalo.reset();
-            } else {
-                mensajeRegistro.textContent = data.error || 'Error al registrar el regalo.';
-                mensajeRegistro.className = 'mensaje error';
-            }
-
-
-        } catch (error) {
-            console.error('Error al enviar la petición:', error);
-            mensajeRegistro.textContent = 'Error de conexión al servidor.';
-            mensajeRegistro.className = 'mensaje error';
-            mensajeRegistro.classList.remove('oculto');
-            setTimeout(() => {
-                mensajeRegistro.classList.add('oculto');
-            }, 3000);
-        }
-    });
-
-
-    function mostrarPagina(pagina) {
-        invitadosTotales = window.invitadosGlobal; // Asegúrate de que esta variable esté definida
-        paginaActual = pagina;
-        const inicio = (pagina - 1) * cantPorPagina;
-        const fin = inicio + cantPorPagina;
-        const invitadosPagina = invitadosTotales.slice(inicio, fin);
-        
-        const tbody = document.querySelector("#tabla-invitados tbody");
-        tbody.innerHTML = "";
-      
-        invitadosPagina.forEach(inv => {
-            const row = document.createElement('tr');
-        
-            const nombreCell = document.createElement('td');
-            nombreCell.textContent = inv.nombre;
-            row.appendChild(nombreCell);
-        
-            const acompanantesCell = document.createElement('td');
-            acompanantesCell.textContent = inv.acompanantes;
-            row.appendChild(acompanantesCell);
-        
-            const estadoCell = document.createElement('td');
-            estadoCell.classList.add('centrado'); // Clase para aplicar estilos CSS (puedes definirla en tu CSS)
-            const botonEstado = document.createElement('button');
-            botonEstado.textContent = inv.estado_confirmacion;
-            botonEstado.classList.add('btn'); // Clase para aplicar estilos CSS (puedes definirla en tu CSS)
-            botonEstado.dataset.invitacionId = inv.id; // Asumiendo que cada invitado tiene un 'id' único
-        
-            botonEstado.addEventListener('click', () => {
-                realizarAccionInvitacion(inv.id, inv.estado_confirmacion);
-            });
-        
-            estadoCell.appendChild(botonEstado);
-            row.appendChild(estadoCell);
-        
-            tbody.appendChild(row);
-        });
-
-        // Actualizar botones y texto
-        document.getElementById("paginaActual").textContent = `Página ${pagina}`;
-        document.getElementById("btnAnterior").disabled = pagina === 1;
-        document.getElementById("btnSiguiente").disabled = fin >= invitadosTotales.length;
-      
-      }
-      document.getElementById("btnAnterior").addEventListener("click", () => {
-        if (paginaActual > 1) {
-          paginaActual--;
-          mostrarPagina(paginaActual);
-        }
-      });
-      
-      document.getElementById("btnSiguiente").addEventListener("click", () => {
-        if ((paginaActual * cantPorPagina) < invitadosTotales.length) {
-          paginaActual++;
-          mostrarPagina(paginaActual);
-        }
-      });
-
-      function paginarLista(pagina) {
-        paginaActual = pagina;
-        const inicio = (pagina - 1) * cantPorPagina;
-        const fin = inicio + cantPorPagina;
-        const regalosPagina = listaTotales.slice(inicio, fin);
-      
-        const tbody = document.querySelector("#regalos tbody");
-        tbody.innerHTML = "";
-      
-        regalosPagina.forEach(inv => {
-          const row = `<tr>
-            <td>${inv.titulo}</td>
-            <td class="ocultar">${inv.enlace}</td>
-            <td class="centrado">${inv.estado}</td>
-          </tr>`;
-          tbody.innerHTML += row;
-        });
-        /*/ Actualizar botones y texto
-        document.getElementById("paginaActual").textContent = `Página ${pagina}`;
-        document.getElementById("btnAnterior").disabled = pagina === 1;
-        document.getElementById("btnSiguiente").disabled = fin >= invitadosTotales.length;*/
-      
-      }
-
-         
-
-      
-      
-  
-    // Cargar datos
-    obtenerResumen();
-    obtenerInvitados();
-    obtenerNotificaciones();
-    obtenerListaRegalos();
-
-    document.getElementById("btn-enviar-excel").addEventListener("click", async () => {
-
-    if (!codigo) {
-        alert("Código de evento no disponible.");
-        return;
-    }
-    const respuesta = await fetch(`${API_URL}/invitados/enviar-excel`, {
+    const response = await fetch(`${API_URL}/regalos`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`
+            // No necesitas 'Content-Type': 'application/json' cuando envías FormData
+        },
+        body: formData, // Enviar el FormData en el cuerpo de la petición
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        mensajeRegistro.textContent = 'Regalo registrado exitosamente.';
+        mensajeRegistro.className = 'mensaje exito';
+        formRegalo.reset();
+    } else {
+        mensajeRegistro.textContent = data.error || 'Error al registrar el regalo.';
+        mensajeRegistro.className = 'mensaje error';
+    }
+
+  } catch (error) {
+      console.error('Error al enviar la petición:', error);
+      mensajeRegistro.textContent = 'Error de conexión al servidor.';
+      mensajeRegistro.className = 'mensaje error';
+      mensajeRegistro.classList.remove('oculto');
+      setTimeout(() => {
+          mensajeRegistro.classList.add('oculto');
+      }, 3000);
+  }
+});
+
+// Enviar lista de invitados por correo
+document.getElementById("btn-enviar-excel").addEventListener("click", async () => {
+  if (!window.invitadosGlobal || window.invitadosGlobal.length === 0) {
+        alert("No hay invitados para exportar.");
+        return;
+    }
+  if (!codigo) {
+      alert("Código de evento no disponible.");
+      return;
+  }
+  const respuesta = await fetch(`${API_URL}/invitados/enviar-excel`, {
+      method: 'POST',
+      headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ codigo: codigo })
+  });
+  
+  const data = await respuesta.json();
+  alert(data.mensaje || "Error al enviar");
+});
+
+// Descargar lista de invitados como Excel
+document.getElementById("btn-descargar-excel").addEventListener("click", () => {
+    if (!window.invitadosGlobal || window.invitadosGlobal.length === 0) {
+        alert("No hay invitados para exportar.");
+        return;
+    }
+
+    // Campos que SÍ quieres exportar
+    const camposDeseados = ["nombre", "email", "acompanantes", "estado_confirmacion","mesa"]; // Ajusta según tus necesidades
+  
+    // Crear una nueva lista con solo los campos deseados
+    const datosFiltrados = window.invitadosGlobal.map(inv => {
+        let nuevo = {};
+        camposDeseados.forEach(campo => {
+            nuevo[campo] = inv[campo];
+        });
+        return nuevo;
+    });
+    
+    // 1. Crear hoja con los datos
+    const ws = XLSX.utils.json_to_sheet(datosFiltrados);
+    
+    // 2. Crear el libro de Excel y agregar la hoja
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Invitados");
+    
+    // 3. Exportar el archivo
+    XLSX.writeFile(wb, "lista_invitados.xlsx");
+});
+      
+// Asignar mesas automáticamente
+document.getElementById("btn-asignar-mesas").addEventListener("click", async () => {
+  if (!window.invitadosGlobal || window.invitadosGlobal.length === 0) {
+    alert("No hay invitados para asignar.");
+    return;
+  }
+
+  const confirmadosSinMesa = window.invitadosGlobal.filter(i =>
+      i.estado_confirmacion === "Confirmado" && (i.mesa === null || i.mesa === undefined)
+  );
+
+  if (confirmadosSinMesa.length === 0) {
+      alert("No hay invitados confirmados sin mesa.");
+      return;
+  }
+
+  // Obtener el último número de mesa asignado
+  const mesasUsadas = window.invitadosGlobal
+      .filter(i => i.mesa !== null && i.mesa !== undefined)
+      .map(i => i.mesa);
+  let numeroMesa = mesasUsadas.length > 0 ? Math.max(...mesasUsadas) : 1;
+
+  let capacidadMesa = 8;
+  let personasEnMesa = 0;
+  let asignaciones = [];
+
+  for (let invitado of confirmadosSinMesa) {
+    // Saltar si ya tiene mesa asignada
+    if (invitado.mesa) continue;
+
+    // Calcular total de personas de este grupo
+    const acompanantes = invitado.acompanantes
+        ? invitado.acompanantes.split(',').map(a => a.trim()).filter(a => a !== "")
+        : [];
+    const grupo = [invitado, ...acompanantes]; // grupo completo
+    const cantidadGrupo = grupo.length;
+
+    // Si excede la capacidad, partir en grupos de 8
+    let grupoRestante = cantidadGrupo;
+    let inicio = 0;
+
+    while (grupoRestante > 0) {
+        let capacidadRestante = capacidadMesa - personasEnMesa;
+
+        if (cantidadGrupo > capacidadMesa) {
+            // Si todo el grupo no cabe, usar una nueva mesa
+            numeroMesa++;
+            capacidadRestante = capacidadMesa;
+            personasEnMesa = 0;
+        } else if (grupoRestante > capacidadRestante) {
+            // Si el grupo restante no cabe en la mesa actual
+            numeroMesa++;
+            capacidadRestante = capacidadMesa;
+            personasEnMesa = 0;
+        }
+
+        // Asignar esta parte del grupo a la mesa actual
+        asignaciones.push({
+            id: invitado.id,
+            mesa: numeroMesa
+        });
+
+        personasEnMesa += cantidadGrupo; // aunque en realidad ya fue contado arriba
+        grupoRestante = 0;
+    }
+  }
+  
+  // Guardar en backend
+  try {
+      const res = await fetch(`${API_URL}/invitados/asignar-mesas`, {
+          method: "POST",
+          headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ codigo: codigo })
-    });
+          }, 
+          body: JSON.stringify(asignaciones)
+      });
+
+      if (!res.ok) throw new Error("Error al guardar la asignación en el servidor.");
+      alert("Mesas asignadas correctamente.");
+  } catch (error) {
+      console.error(error);
+      alert("Hubo un error al asignar las mesas.");
+  }
+});  
+
+
+ 
+document.getElementById("btnAnterior").addEventListener("click", () => {
+  if (paginaActual > 1) {
+    paginaActual--;
+    mostrarPagina(paginaActual);
+  }
+});
     
-    const data = await respuesta.json();
-    alert(data.mensaje || "Error al enviar");
-    });
+document.getElementById("btnSiguiente").addEventListener("click", () => {
+  if ((paginaActual * cantPorPagina) < invitadosTotales.length) {
+    paginaActual++;
+    mostrarPagina(paginaActual);
+  }
+});
 
-    document.getElementById("btn-descargar-excel").addEventListener("click", () => {
-        if (!window.invitadosGlobal || window.invitadosGlobal.length === 0) {
-            alert("No hay invitados para exportar.");
-            return;
-        }
-
-        // Campos que SÍ quieres exportar
-       const camposDeseados = ["nombre", "email", "acompanantes", "estado_confirmacion","mesa"]; // Ajusta según tus necesidades
-       
-       // Crear una nueva lista con solo los campos deseados
-        const datosFiltrados = window.invitadosGlobal.map(inv => {
-            let nuevo = {};
-            camposDeseados.forEach(campo => {
-                nuevo[campo] = inv[campo];
-            });
-            return nuevo;
-        });
-        
-        // 1. Crear hoja con los datos
-        const ws = XLSX.utils.json_to_sheet(datosFiltrados);
-        
-        // 2. Crear el libro de Excel y agregar la hoja
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Invitados");
-        
-        // 3. Exportar el archivo
-        XLSX.writeFile(wb, "lista_invitados.xlsx");
-    });
-    
-    document.getElementById("btn-asignar-mesas").addEventListener("click", async () => {
-      if (!window.invitadosGlobal || window.invitadosGlobal.length === 0) {
-        alert("No hay invitados para asignar.");
-        return;
-      }
-
-      const confirmadosSinMesa = window.invitadosGlobal.filter(i =>
-          i.estado_confirmacion === "Confirmado" && (i.mesa === null || i.mesa === undefined)
-      );
-
-      if (confirmadosSinMesa.length === 0) {
-          alert("No hay invitados confirmados sin mesa.");
-          return;
-      }
-
-      // Obtener el último número de mesa asignado
-      const mesasUsadas = window.invitadosGlobal
-          .filter(i => i.mesa !== null && i.mesa !== undefined)
-          .map(i => i.mesa);
-      let numeroMesa = mesasUsadas.length > 0 ? Math.max(...mesasUsadas) : 1;
-
-      let capacidadMesa = 8;
-      let personasEnMesa = 0;
-      let asignaciones = [];
-
-      for (let invitado of confirmadosSinMesa) {
-        // Saltar si ya tiene mesa asignada
-        if (invitado.mesa) continue;
-
-        // Calcular total de personas de este grupo
-        const acompanantes = invitado.acompanantes
-            ? invitado.acompanantes.split(',').map(a => a.trim()).filter(a => a !== "")
-            : [];
-        const grupo = [invitado, ...acompanantes]; // grupo completo
-        const cantidadGrupo = grupo.length;
-
-        // Si excede la capacidad, partir en grupos de 8
-        let grupoRestante = cantidadGrupo;
-        let inicio = 0;
-
-        while (grupoRestante > 0) {
-            let capacidadRestante = capacidadMesa - personasEnMesa;
-
-            if (cantidadGrupo > capacidadMesa) {
-                // Si todo el grupo no cabe, usar una nueva mesa
-                numeroMesa++;
-                capacidadRestante = capacidadMesa;
-                personasEnMesa = 0;
-            } else if (grupoRestante > capacidadRestante) {
-                // Si el grupo restante no cabe en la mesa actual
-                numeroMesa++;
-                capacidadRestante = capacidadMesa;
-                personasEnMesa = 0;
-            }
-
-            // Asignar esta parte del grupo a la mesa actual
-            asignaciones.push({
-                id: invitado.id,
-                mesa: numeroMesa
-            });
-
-            personasEnMesa += cantidadGrupo; // aunque en realidad ya fue contado arriba
-            grupoRestante = 0;
-        }
-      }
-      
-      // Guardar en backend
-      try {
-          const res = await fetch(`${API_URL}/invitados/asignar-mesas`, {
-              method: "POST",
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }, 
-              body: JSON.stringify(asignaciones)
-          });
+document.addEventListener("DOMContentLoaded", () => {
   
-          if (!res.ok) throw new Error("Error al guardar la asignación en el servidor.");
-          alert("Mesas asignadas correctamente.");
-      } catch (error) {
-          console.error(error);
-          alert("Hubo un error al asignar las mesas.");
-      }
-    });
+    if (token) {
+      console.log("✅ Sesión activa detectada al cargar DOM", { token, tipoUsuario });
+      iniciarAplicacion();
+      return;
+    }
+    // ❌ No logueado → mostrar popup
+    overlay.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    console.log("❌ No hay sesión activa, mostrando login");
 
-  
 
 
-  });
+});
+
 
  

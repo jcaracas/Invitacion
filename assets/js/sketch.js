@@ -52,7 +52,7 @@ async function cargarRegalos() {
     contenedor.innerHTML = "<p>Cargando...</p>";
 
     try {
-        const API_URL = "http://127.0.0.1:5000/api";
+        const API_URL = "https://webiinvitefront.onrender.com/api";
         const res = await fetch(`${API_URL}/regalos/evento/${eventoId}`);
         const data = await res.json();
 
@@ -63,7 +63,7 @@ async function cargarRegalos() {
             div.classList.add("tarjeta-regalo");
 
             // 👉 ruta absoluta al backend
-            const imagenUrl = `http://127.0.0.1:5000${regalo.imagen}`;
+            const imagenUrl = `${regalo.enlace}`;
 
             div.style.backgroundImage = `url('${imagenUrl}')`;
             
@@ -73,9 +73,9 @@ async function cargarRegalos() {
                         <div class="contenido-regalo">
                             <h4 class="titulo">${regalo.titulo}</h4>
 
-                            ${regalo.enlace ? `<a href="${regalo.enlace}" target="_blank" class="link">Ver link</a>` : ""}
+                            <p class="precio">$${regalo.valor}</p>
 
-                            <p class="estado">${regalo.estado}</p>
+                            <p class="estado">${regalo.reservado_por}</p>
 
                             <button class="btn-seleccionar" data-id="${regalo.id}">
                                 Seleccionar

@@ -12,7 +12,7 @@ function initMap() {
         map: map
     });
 }*/
-const API_URL = "http://127.0.0.1:5000/api"; // Cambia esto a la URL de tu API
+const API_URL = "https://webiinvitefront.onrender.com/api"; // Cambia esto a la URL de tu API
 //const token = localStorage.getItem("token");
 
 function abrirGoogleMaps() {
@@ -249,7 +249,7 @@ function obtenerLimitePorDispositivo() {
     }
 }
 
-async function loadFavoritas(pagina = 1) {
+/*async function loadFavoritas(pagina = 1) {
     const token = localStorage.getItem("token");
     const codigo = localStorage.getItem("codigo"); // Obtener el código del evento desde localStorage
     const limit = obtenerLimitePorDispositivo(); // 🟢 aquí se define cuántas cargar
@@ -272,7 +272,7 @@ async function loadFavoritas(pagina = 1) {
             console.error("Error al obtener favoritas:", error);
         }
     }
-}
+}*/
 
 function renderFavoritas(images) {
     const container = document.getElementById('favoritasGrid');
@@ -395,6 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const email = document.getElementById('usuario-flotante').value;
         const contrasenia = document.getElementById('contrasena-flotante').value;
+
 
         try {
             const response = await fetch(`${API_URL}/usuarios/login`, {
@@ -529,6 +530,6 @@ document.getElementById("form-confirmar-asistencia").addEventListener("submit", 
     // Opcional: recarga solo si cambia el tipo de dispositivo
     clearTimeout(window.resizedFinished);
     window.resizedFinished = setTimeout(() => {
-        loadFavoritas(1); // Reinicia en página 1
+        //loadFavoritas(1); // Reinicia en página 1
     }, 500);
 });

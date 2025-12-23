@@ -89,7 +89,7 @@ body, html {
 /* Estilos para la invitación responsiva */ 
 
 .invitacion-container {
-  background-color: #7B1B38; /* Burdeo */
+  background-color: #7D152A; /* Burdeo */
   padding: 40px 15px;
   text-align: center;
   color: #f5d786; /* Dorado */
@@ -521,11 +521,15 @@ body, html {
 /* Capa clara para leer texto */
 .contenido-regalo {
     width: 100%;
+    height: 100%;
     background: rgba(255, 248, 240, 0.7);
-    padding: 18px;
+    padding: 5px 18px  18px 18px;
     text-align: center;
     border-radius: 0 0 18px 18px;
     margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Textos */
@@ -601,7 +605,7 @@ body, html {
   text-align: center;
   display: flex;
   justify-content: space-evenly;
-    flex-direction: column;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -613,6 +617,13 @@ body, html {
 
 .hidden {
   display: none;
+}
+
+.precio {
+    font-size: 1.2rem;
+    color: #7b1e2b;
+    margin-bottom: 0px;
+    font-weight: 600;
 }
 
 /* Contenido Formulario de aceptacion*/
@@ -730,4 +741,147 @@ select {
     }
 
 }
+/* SECCIÓN PROGRAMA */
+.programa {
+  background: #7D152A; /* burdeos */
+  color: #f3d88a;      /* dorado */
+  padding: 50px 20px;
+  text-align: center;
+}
 
+.programa-titulo {
+  font-size: 64px;
+  margin-bottom: 50px;
+}
+
+/* Timeline horizontal */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Línea */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 140px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #f3d88a;
+}
+
+/* Evento */
+.evento {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 22%;
+    position: relative;
+    text-align: center;
+}
+
+
+
+.evento img {
+    width: 150px;
+    height: auto;
+    
+}
+
+.prgtexto {
+    height: 100px;  
+}
+
+.hora {
+  font-size: 20px;
+  display: block;
+  margin: 20px 0 10px 0;
+}
+
+.evento p {
+  font-size: 25px;
+  margin: 0;
+}
+
+.carousel{
+    width: 70%;
+}
+
+.carousel-inner{
+    border-radius: 50px 0;
+    
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+    .programa {
+        padding: 30px 10px;
+    }
+  .programa-titulo {
+    font-size: 48px;
+    margin-bottom: 10px;
+  }
+
+  .timeline {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timeline::before {
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+  }
+
+  .evento {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    gap: 10px;
+  }
+
+  .evento::before {
+    top: 0;
+    left: 50%;
+  }
+
+  .left {
+    text-align: center;
+    align-self: flex-start;
+    margin: 0px 0px 0px 50%;
+    width: auto;
+    }
+
+    .right {
+        text-align: center;
+        align-self: flex-end;
+        margin: 0px 50% 0px 0px;
+        width: auto;
+    }
+    .event img {
+        margin: 0;
+        mix-blend-mode: multiply;
+    }
+    .event p {
+        margin: 4px;
+        mix-blend-mode: multiply;
+    }
+    
+    .prgtexto {
+        height: auto; 
+        width: 180px; 
+    }
+    .carousel{
+    width: 100%;
+}
+}
