@@ -1,3 +1,4 @@
+import { iniciarAplicacion } from './dashboard.js';
 // ======================
 // NAVBAR RESPONSIVE
 // ======================
@@ -40,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const { token, tipoUsuario } = getSesion();
-  //console.log("Sesión actual:", { token, tipoUsuario });
-
+  
   const overlay = document.getElementById("loginOverlay");
   const form = document.getElementById("loginForm");
   const errorText = document.getElementById("loginError");
@@ -116,6 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const storage = remember ? localStorage : sessionStorage;
       storage.setItem("token", data.token);
       storage.setItem("tipo_usuario", data.user.tipo_usuario);
+      
+      
+      iniciarAplicacion({ 
+        token: data.token, API_URL, codigo: localStorage.getItem("codigo")
+      });
 
       document.dispatchEvent(new Event("sesion-iniciada"));
 

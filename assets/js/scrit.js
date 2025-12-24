@@ -430,16 +430,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });*/
 
-    // Cerrar sesión
+    /*/ Cerrar sesión
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('token');
         localStorage.removeItem('tipo_usuario');
 
-        navbar.style.display = 'none';
+        //navbar.style.display = 'none';
         logoutButton.style.display = 'none';
         //loginButton.style.display = 'inline-block';
     });
-    //loadFavoritas(); Cargar favoritas al inicio
+    //loadFavoritas(); Cargar favoritas al inicio*/
 
 });
 

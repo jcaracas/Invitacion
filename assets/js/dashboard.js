@@ -18,21 +18,20 @@ let listaTotales = []; // Variable para almacenar la lista de regalos
 
 
 
-async function iniciarAplicacion() {
-  console.log("✅ Sesión activa, iniciando app");
+export async function iniciarAplicacion({ token, API_URL, codigo }) {
   if (!token) return;
 
-  obtenerResumen();
-  obtenerInvitados();
-  obtenerNotificaciones();
-  obtenerListaRegalos();
+  obtenerResumen(API_URL, token, codigo);
+  obtenerInvitados(API_URL, token, codigo);
+  obtenerNotificaciones(API_URL, token, codigo);
+  obtenerListaRegalos(API_URL, token, codigo);
 
   // aquí puedes habilitar botones, menús, etc.
 }
 
 
 
-async function obtenerResumen() {        
+async function obtenerResumen(API_URL, token, codigo) {        
   try{
     const res = await fetch(`${API_URL}/invitados/estado/${codigo}`, {
       method: 'GET',
@@ -51,7 +50,7 @@ async function obtenerResumen() {
   }
 }
 
-async function obtenerInvitados() {
+async function obtenerInvitados(API_URL, token, codigo) {
   try {
     const res = await fetch(`${API_URL}/invitados/evento/${codigo}`, {
       method: 'GET',
@@ -87,7 +86,7 @@ async function obtenerNotificaciones() {
   });
 }
 
-async function obtenerListaRegalos() {
+async function obtenerListaRegalos(API_URL, token, codigo) {
   try {
     const res = await fetch(`${API_URL}/regalos/evento/${codigo}`, {
       method: 'GET',
@@ -100,7 +99,7 @@ async function obtenerListaRegalos() {
     listaTotales = await res.json();
     paginarLista(1); // Mostrar la primera página
   } catch (err) {
-    alert("Error al cargar lista de regalos linea 94");
+    alert("Error al cargar lista de regalos");
     console.error(err);
   }
 }
@@ -488,11 +487,11 @@ document.getElementById("btnSiguiente").addEventListener("click", () => {
   }
 });
 
+
 document.addEventListener("DOMContentLoaded", () => {
   
     if (token) {
-      console.log("✅ Sesión activa detectada al cargar DOM", { token, tipoUsuario });
-      iniciarAplicacion();
+      iniciarAplicacion({ token, API_URL, codigo });
       return;
     }
     // ❌ No logueado → mostrar popup
@@ -503,6 +502,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 });
-
 
  
