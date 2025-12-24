@@ -134,14 +134,18 @@
     <div class="modal-contenido">        
         <h2>Agregar Lista de Regalo <span class="cerrar-modal">&times;</span></h2>
         <form id="registro-regalo-form">
+          <div id="mensaje-registro" class="mensaje hidden" ></div>
             <div>
                 <input type="text" id="nombre" name="nombre" required autocomplete="off" placeholder="Nombre del regalo">
             </div>
-            <div >
-                <input type="file" id="imagen" name="imagen" accept="image/*" placeholder="Imagen del regalo" >
+            <div>
+                <input type="text" id="link" name="link" required autocomplete="off" placeholder="Enlace de Imagen">
             </div>
             <div>
-                <input type="text" id="link" name="link" required autocomplete="off" placeholder="Enlace de compra">
+                <input type="text" id="valor" name="valor" required autocomplete="off" placeholder="Valor del regalo">
+            </div>
+            <div>
+                <input type="text" id="reservadopor" name="reservadopor" required autocomplete="off" placeholder="Detalle del regalo">
             </div>
             
             <button type="submit" class="btn">Registrar Regalo</button>

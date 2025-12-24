@@ -286,13 +286,15 @@ formRegalo.addEventListener('submit', async (event) => {
   
   const titulo = document.getElementById('nombre').value.trim();
   const enlace = document.getElementById('link').value.trim();
-  const imagenArchivo = imagenInput.files[0]; // Obtener el archivo de imagen seleccionado
+  const valor = document.getElementById('valor').value.trim();
+  const reservadopor = document.getElementById('reservadopor').value.trim();
   
   try {
     const formData = new FormData();
     formData.append('titulo', titulo);
     formData.append('enlace', enlace);
-    formData.append('imagen', imagenArchivo); // Append el archivo de imagen
+    formData.append('valor', valor);
+    formData.append('reservado_por', reservadopor);
     formData.append('codigo', codigo); // Append el código del evento
 
     const response = await fetch(`${API_URL}/regalos`, {
@@ -307,21 +309,26 @@ formRegalo.addEventListener('submit', async (event) => {
     const data = await response.json();
 
     if (response.ok) {
-        mensajeRegistro.textContent = 'Regalo registrado exitosamente.';
-        mensajeRegistro.className = 'mensaje exito';
-        formRegalo.reset();
+      mensajeRegistro.classList.remove('hidden');
+      mensajeRegistro.className = 'mensaje exito';
+      mensajeRegistro.textContent = 'Regalo registrado exitosamente.';
+      setTimeout(() => {
+          mensajeRegistro.classList.add('hidden');
+      }, 3000);
+      formRegalo.reset();
+      obtenerListaRegalos(); // Refrescar la lista de regalos
     } else {
-        mensajeRegistro.textContent = data.error || 'Error al registrar el regalo.';
-        mensajeRegistro.className = 'mensaje error';
+      mensajeRegistro.className = 'mensaje error';
+      mensajeRegistro.textContent = data.error || 'Error al registrar el regalo.';
     }
 
   } catch (error) {
       console.error('Error al enviar la petición:', error);
       mensajeRegistro.textContent = 'Error de conexión al servidor.';
       mensajeRegistro.className = 'mensaje error';
-      mensajeRegistro.classList.remove('oculto');
+      mensajeRegistro.classList.remove('hidden');
       setTimeout(() => {
-          mensajeRegistro.classList.add('oculto');
+          mensajeRegistro.classList.add('hidden');
       }, 3000);
   }
 });

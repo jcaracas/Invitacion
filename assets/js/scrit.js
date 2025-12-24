@@ -205,7 +205,7 @@ const confirmacionesMenu = document.getElementById('confirmamenu');
 let paginaActual = 1;
 let totalPaginas = 1;
 
-// Función para mostrar u ocultar elementos según sesión
+/*/ Función para mostrar u ocultar elementos según sesión
 function actualizarUIporSesion() {
     const token = localStorage.getItem("token"); // Valor por defecto null
     const tipoUsuario = localStorage.getItem("tipo_usuario"); // Valor por defecto "invitado"
@@ -231,7 +231,7 @@ function actualizarUIporSesion() {
             loadFavoritas();
         }  
          
-}
+}*/
 
 function randomRotation() {
     return (Math.random() * 10 - 5).toFixed(2); // entre -5 y +5 grados
@@ -360,7 +360,7 @@ function actualizarControlesPaginacion() {
 // Fin del script de galería
 
 document.addEventListener("DOMContentLoaded", () => {
-    actualizarUIporSesion(); // Llama a la función al cargar la página
+    //actualizarUIporSesion(); // Llama a la función al cargar la página
     const codigo = document.getElementById("evento-id")?.dataset?.id;
     localStorage.setItem("codigo", codigo); // Guardar el código del evento en localStorage
     
@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logoutButton.addEventListener("click", () => {
             localStorage.removeItem("token");
             localStorage.removeItem("tipo_usuario");
-            actualizarUIporSesion();
+            //actualizarUIporSesion();
             console.log("Sesión cerrada", localStorage.getItem("tipo_usuario"));
         });
     }
