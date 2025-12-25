@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const popupOverlay = document.getElementById("popupOverlay");
     const popupContent = document.getElementById("popupContent");
-
+    
     // Bloquear scroll mientras el popup está activo
     document.body.style.overflow = "hidden";
 
@@ -19,15 +19,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
             popupOverlay.classList.add("hidden");
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "auto";// Restaurar scroll
         }, 600); // duración de fadeOut
     }
+
+    document.getElementById("btn-agregar-fotos").addEventListener("click", () => {
+    // 🔒 FECHA DE APERTURA (AJUSTA AQUÍ)
+    const fechaHabilitada = new Date("2026-02-28T20:00:00"); 
+    const ahora = new Date();
+
+    if (ahora < fechaHabilitada) {
+      alert("📸 La galería de fotos se habilitará el 28 de febrero. ¡Muy pronto!");
+      return;
+    }
+
+    // ✅ Fecha válida → abrir Google Photos
+    window.open("https://photos.app.goo.gl/vUAkTkoVznKgcje27", "_blank");
+  });
 });
 
 // Abrir popup
 document.getElementById("btn-ver-lista").addEventListener("click", async () => {
     const popup = document.getElementById("popup-lista");
     popup.style.display = "flex";
+    document.body.style.overflow = "hidden";// Bloquear scroll
 
     await cargarRegalos();
 });
@@ -35,6 +50,7 @@ document.getElementById("btn-ver-lista").addEventListener("click", async () => {
 // Cerrar popup
 document.querySelector(".cerrar-popup-lista").addEventListener("click", () => {
     document.getElementById("popup-lista").style.display = "none";
+    document.body.style.overflow = "auto";// Restaurar scroll
 });
 
 // Cerrar haciendo click fuera
@@ -83,8 +99,12 @@ async function cargarRegalos() {
                         </div>
                     </div>
                     <div class="card-back">
-                        <h3>${regalo.titulo}</h3>
-                        <p>${regalo.descripcion || "Un regalo muy especial 💝"}</p>
+                        <h4 class="cancelar-seleccion" title="Presionar aqui para volver">Tu regalo es un gran aporte</h4>
+                        <p>
+                        Banco Falabella - Cuenta de Ahorros
+                        Nro. 1234567890 <br>a Nombre de Nahir Adrian 
+                        <br>Deja el nombre del regalo que seleccionaste en el detalle.
+                        </p>
                         <button class="btn-confirmar">Confirmar</button>
                     </div>
                 </div>
@@ -97,7 +117,16 @@ async function cargarRegalos() {
 
             // Confirmar
             div.querySelector(".btn-confirmar")
-                .addEventListener("click", () => confirmarRegalo(regalo.id));
+                .addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    confirmarRegalo(eventoId, div,regalo.titulo);
+                });
+            /* 👉 Cancelar selección (click fuera del botón) */
+            div.querySelector(".card-back").addEventListener("click", (e) => {
+                if (!e.target.classList.contains("btn-confirmar")) {
+                    div.classList.remove("flip");
+                }
+            });
 
             contenedor.appendChild(div);
         });
@@ -108,12 +137,32 @@ async function cargarRegalos() {
     }
 }
 
-function confirmarRegalo(id) {
-    document.getElementById("popupRegalos").classList.add("hidden");
-    document.getElementById("mensajeGracias").classList.remove("hidden");
+async function confirmarRegalo(Id, tarjeta,titulo) {
+    const API_URL = "https://webiinvitefront.onrender.com/api";
+    try {
+        const res = await fetch(`${API_URL}/notificaciones`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                mensaje: "Un invitado ha confirmado el regalo: " + titulo,
+                evento_id: Id
+
+            })
+        });
+
+        if (!res.ok) throw new Error("Error al confirmar regalo");
+        document.getElementById("popup-lista").classList.add("hidden");
+        document.getElementById("mensajeGracias").classList.remove("hidden");
+
+    } catch (err) {
+        console.error("Error confirmando regalo:", err);
+        alert("No se pudo confirmar el regalo, intenta nuevamente.");
+    }
+
 }
 
 function cerrarMensaje() {
     document.getElementById("mensajeGracias").classList.add("hidden");
+    document.body.style.overflow = "auto";// Restaurar scroll
 }
 

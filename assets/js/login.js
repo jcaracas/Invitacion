@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const overlay = document.getElementById("loginOverlay");
   const form = document.getElementById("loginForm");
+  const btnLogin = document.getElementById("btn-login");
   const errorText = document.getElementById("loginError");
 
   // ======================
@@ -94,6 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     errorText.textContent = "";
 
+    // 🔒 Bloqueo inmediato
+    if (btnLogin.disabled) return;
+    btnLogin.disabled = true;
+    btnLogin.textContent = "Ingresando...";
+    
     const email = document.getElementById("email").value.trim();
     const contrasenia = passwordInput.value;
     const remember = document.getElementById("remember").checked;
@@ -109,6 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!res.ok) {
         errorText.textContent = data.mensaje || "Credenciales inválidas";
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Iniciar sesión";
         return;
       }
 

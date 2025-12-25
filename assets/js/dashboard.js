@@ -45,7 +45,7 @@ async function obtenerResumen(API_URL, token, codigo) {
     document.getElementById("pendientes").textContent = `Pendientes: ${resumen.Pendiente || 0}`;
     document.getElementById("rechazados").textContent = `Rechazados: ${resumen.Rechazado || 0}`;
   }catch (err) {
-    alert("Error al cargar resumen linea 40");
+    alert("Error al cargar resumen");
     console.error(err);
   }
 }
@@ -257,8 +257,8 @@ function paginarLista(pagina) {
   regalosPagina.forEach(inv => {
     const row = `<tr>
       <td>${inv.titulo}</td>
-      <td class="ocultar">${inv.enlace}</td>
-      <td class="centrado">${inv.estado}</td>
+      <td class="ocultar">${inv.reservado_por}</td>
+      <td class="centrado">${inv.valor}</td>
     </tr>`;
     tbody.innerHTML += row;
   });
@@ -498,6 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.style.display = "flex";
     document.body.style.overflow = "hidden";
     console.log("❌ No hay sesión activa, mostrando login");
+
 
 
 

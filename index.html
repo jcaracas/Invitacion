@@ -114,7 +114,9 @@
         <img src="./assets/img/bannermatri.jpg" class="imagen-fondo imagen-horizontal">
         <img src="./assets/img/fondoacuarela.jpg" class="imagen-fondo imagen-vertical">
         <div class="evento-contenido">
-            <h1 class="titulo-lugar">Centro de Eventos<br>Casa Bertullini</h1>
+            <div class="title">
+                <h1 class="titulo-lugar">Centro de Eventos<br>Casa Bertullini</h1>
+            </div>
             <p class="direccion">
                 Camino Luis Cruz Martínez 1600, Pudahuel 
             </p>
@@ -143,43 +145,68 @@
         </div>
     </section>
 
-    <section class="evento-container">
+    <section class="evento-container ListaDeseo">
         
         <img src="./assets/img/bannermatri.jpg" class="imagen-fondo imagen-horizontal">
         <img src="./assets/img/fondoacuarela.jpg" class="imagen-fondo imagen-vertical">
         <div class="evento-contenido">
-            <div class="sombra">
+            <div class="title">
                 <h1 class="titulo-lugar">Lista de Deseos</h1>
-                <p class="direccion">
-                    ¡Tu presencia es nuestro mayor tesoro!  <br>
-Pero si deseas hacernos un regalo, te compartimos nuestra <br>lista de deseos que hemos preparado con mucha ilusión.
-                </p>
             </div>
-            
+            <p class="direccion">
+                ¡Tu presencia es <br class="saltoLinea" >nuestro mayor tesoro!  <br>
+Pero si deseas hacernos un regalo, te compartimos nuestra <br>lista de deseos que hemos preparado con mucha ilusión.
+            </p>
             <a id="btn-ver-lista" class="btn-mapa">Ver Lista</a>
         </div>
         
     </section>
+    
+    <section class="programa">
+        <h2 class="programa-titulo">Itinerario</h2>
 
-    <section id="dresscode">
-        <div class="contenedor-dress">
-
-            <h2 class="tituloV"><span class="tituloF">S</span>ube Tus Fotos</h2>
-
-            <!-- Ícono SVG editable -->
-            <div class="icono">
-                <img src="./assets/img/camara.png" alt="">
+        <div class="timeline">
+            <div class="evento left">
+                <img src="./assets/img/fiesta.png" alt="Cóctel">
+                <span class="marcador"></span>
+                <div class="prgtexto">
+                    <span class="hora">7:00 pm</span>
+                    <p >Cóctel de Bienvenida</p>
+                </div>
             </div>
 
-            <p class="texto">
-                Nos encantaría ver todas las fotos y videos que captures <br>
-                de nuestro gran día, no te olvides de subirlas <br>a nuestro álbum digital
-            </p>
-            <a href="https://photos.app.goo.gl/vUAkTkoVznKgcje27" target="_blank" id="btn-ver-lista" class="btn-fotos">Subir Fotos</a>
+            <div class="evento right">
+                <img src="./assets/img/copas.png" alt="Cóctel">
+                <span class="marcador"></span>
+                <div class="prgtexto">
+                    <span class="hora">8:30 pm</span>
+                    <p class="texto">Brindemos por el Amor</p>
+                </div>
+            </div>
 
+            <div class="evento left">
+                <img src="./assets/img/cena.png" alt="Cóctel">
+                <span class="marcador"></span>
+                <div class="prgtexto">
+                    <span class="hora">9:00 pm</span>
+                    <p class="texto">Buen Provecho</p>
+                </div>
+            </div>
+
+            <div class="evento right">
+                <img src="./assets/img/bailar.png" alt="Cóctel">
+                <span class="marcador"></span>
+                <div class="prgtexto">
+                    <span class="hora">10:00 pm</span>
+                    <p class="texto">Todos a Bailar</p>
+                </div>
+            </div>
         </div>
+        <p class="texto mb-0 pt-2">
+            Hay momentos en la vida que solo ocurren una vez,por eso agradecemos tu puntualidad.
+        </p>
     </section>
-
+    
     <section class="evento-container tg">    
         <img src="./assets/img/bannermatri.jpg" class="imagen-fondo imagen-horizontal">
         <img src="./assets/img/fondoacuarela.jpg" class="imagen-fondo imagen-vertical">
@@ -199,7 +226,7 @@ Pero si deseas hacernos un regalo, te compartimos nuestra <br>lista de deseos qu
                             
                         </select>
                     </div>            
-                    <textarea id="asistentes" class="rsvp" placeholder="Escribe aquí el listado de asistentes, separado por comas ( , )"></textarea>
+                    <textarea id="asistentes" class="rsvp" placeholder="Escribe aquí los nombres de los asistentes, separado por comas ( , )"></textarea>
                     <textarea id="comentario" class="rsvp" placeholder="¿Quieres agregar un comentario para los novios?"></textarea>
 
                     <div class="text-center">
@@ -231,45 +258,23 @@ Pero si deseas hacernos un regalo, te compartimos nuestra <br>lista de deseos qu
         </div>
     </section>
 
-    <section class="programa">
-        <h2 class="programa-titulo">Itinerario</h2>
+    <section id="dresscode">
+        <div class="contenedor-dress">
 
-        <div class="timeline">
-            <div class="evento left">
-                <img src="./assets/img/fiesta.png" alt="Cóctel">
-                <div class="prgtexto">
-                    <span class="hora">7:00 pm</span>
-                    <p >Cóctel de Bienvenida</p>
-                </div>
+            <h2 class="tituloV"><span class="tituloF">S</span>ube Tus Fotos</h2>
+
+            <!-- Ícono SVG editable -->
+            <div class="icono">
+                <img src="./assets/img/camara.png" alt="">
             </div>
 
-            <div class="evento right">
-                <img src="./assets/img/copas.png" alt="Cóctel">
-                <div class="prgtexto">
-                    <span class="hora">8:30 pm</span>
-                    <p class="texto">Brindemos por el Amor</p>
-                </div>
-            </div>
+            <p class="texto">
+                Nos encantaría ver todas las fotos y videos que captures <br>
+                de nuestro gran día, no te olvides de subirlas a nuestro álbum digital
+            </p>
+            <a  id="btn-agregar-fotos" class="btn-fotos">Subir Fotos</a>
 
-            <div class="evento left">
-                <img src="./assets/img/cena.png" alt="Cóctel">
-                <div class="prgtexto">
-                    <span class="hora">9:00 pm</span>
-                    <p class="texto">Buen Provecho</p>
-                </div>
-            </div>
-
-            <div class="evento right">
-                <img src="./assets/img/bailar.png" alt="Cóctel">
-                <div class="prgtexto">
-                    <span class="hora">10:00 pm</span>
-                    <p class="texto">Todos a Bailar</p>
-                </div>
-            </div>
         </div>
-        <p class="texto mb-0 pt-2">
-            Hay momentos en la vida que solo ocurren una vez,por eso agradecemos tu puntualidad.
-        </p>
     </section>
 
 
@@ -323,6 +328,13 @@ Pero si deseas hacernos un regalo, te compartimos nuestra <br>lista de deseos qu
             <div id="contenedor-regalos" class="regalos-grid">
                 <!-- Aquí se cargan los regalos desde el backend -->
             </div>
+        </div>
+    </div>
+    <div id="mensajeGracias" class="popup-gracias hidden">
+        <div class="popup-inner mensaje">
+            <h2>¡Gracias! 💖</h2>
+            <p>Tu regalo es recibido con mucho amor.</p>
+            <button onclick="cerrarMensaje()" class="rsvp-btn">Cerrar</button>
         </div>
     </div>
 
