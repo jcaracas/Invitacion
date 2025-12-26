@@ -81,14 +81,12 @@ async function obtenerNotificaciones(API_URL, token, codigo) {
         'Content-Type': 'application/json'
       }
     });
-    const data = await res.json();
-    console.log(data);
-    const notificaciones = data.notificaciones
+    const notificaciones = await res.json();
     const ul = document.getElementById("lista-notificaciones");
     ul.innerHTML = "";
     notificaciones.forEach(n => {
       const li = document.createElement("li");
-      li.textContent = n;
+      li.textContent = n.mensaje+" - "+new Date(n.createdAt).toISOString().split("T")[0];
       ul.appendChild(li);
     });
   } catch (err) {
