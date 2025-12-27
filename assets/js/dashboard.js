@@ -106,7 +106,7 @@ async function obtenerListaRegalos(API_URL, token, codigo) {
     });
 
     listaTotales = await res.json();
-    paginarLista(1); // Mostrar la primera página
+    mostrarListaCompleta(); // Mostrar la lista completa
   } catch (err) {
     alert("Error al cargar lista de regalos");
     console.error(err);
@@ -263,29 +263,26 @@ async function toggleFavorito(invitadoId) {
   }
 }
 
-function paginarLista(pagina) {
-  paginaActual = pagina;
-  const inicio = (pagina - 1) * cantPorPagina;
-  const fin = inicio + cantPorPagina;
-  const regalosPagina = listaTotales.slice(inicio, fin);
-
+function mostrarListaCompleta() {
   const tbody = document.querySelector("#regalos tbody");
   tbody.innerHTML = "";
 
-  regalosPagina.forEach(inv => {
-    const row = `<tr>
+  listaTotales.forEach(inv => {
+    const row = document.createElement("tr");
+    
+    row.innerHTML = `
       <td>${inv.titulo}</td>
-      <td class="ocultar">${inv.reservado_por}</td>
-      <td class="centrado">${inv.valor}</td>
-    </tr>`;
-    tbody.innerHTML += row;
-  });
-  /*/ Actualizar botones y texto
-  document.getElementById("paginaActual").textContent = `Página ${pagina}`;
-  document.getElementById("btnAnterior").disabled = pagina === 1;
-  document.getElementById("btnSiguiente").disabled = fin >= invitadosTotales.length;*/
+      <td class="ocultar">${inv.reservado_por || "-"}</td>
+      <td class="centrado">${Number(inv.valor).toLocaleString("es-CL", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })}</td>
+    `;
 
+    tbody.appendChild(row);
+  });
 }
+
 
 // Abrir modal de registro de regalo
 document.getElementById("agregar-regalo").addEventListener("click", () => {
@@ -305,22 +302,31 @@ formRegalo.addEventListener('submit', async (event) => {
   const enlace = document.getElementById('link').value.trim();
   const valor = document.getElementById('valor').value.trim();
   const reservadopor = document.getElementById('reservadopor').value.trim();
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const codigo = localStorage.getItem("codigo") ;
   
   try {
-    const formData = new FormData();
+    /*const formData = new FormData();
     formData.append('titulo', titulo);
     formData.append('enlace', enlace);
     formData.append('valor', valor);
     formData.append('reservado_por', reservadopor);
     formData.append('codigo', codigo); // Append el código del evento
+    console.log(titulo, enlace, valor, reservadopor, codigo);*/
 
     const response = await fetch(`${API_URL}/regalos`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`
-            // No necesitas 'Content-Type': 'application/json' cuando envías FormData
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json' //cuando envías FormData
         },
-        body: formData, // Enviar el FormData en el cuerpo de la petición
+        body: JSON.stringify({
+            titulo,
+            enlace,
+            valor,
+            reservado_por: reservadopor,
+            codigo
+        }),
     });
 
     const data = await response.json();
@@ -333,7 +339,7 @@ formRegalo.addEventListener('submit', async (event) => {
           mensajeRegistro.classList.add('hidden');
       }, 3000);
       formRegalo.reset();
-      obtenerListaRegalos(); // Refrescar la lista de regalos
+      obtenerListaRegalos(API_URL, token, codigo); // Refrescar la lista de regalos
     } else {
       mensajeRegistro.className = 'mensaje error';
       mensajeRegistro.textContent = data.error || 'Error al registrar el regalo.';

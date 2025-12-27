@@ -119,6 +119,7 @@ document.getElementById("addToCalendar").addEventListener("click", function() {
 const daysElement = document.getElementById("days");
 const hoursElement = document.getElementById("hours");
 const minutesElement = document.getElementById("minutes");
+const secondsElement = document.getElementById("seconds");
 const messageElement = document.getElementById("message");
 
 function updateCountdown() {
@@ -129,6 +130,7 @@ function updateCountdown() {
         daysElement.textContent = "0";
         hoursElement.textContent = "0";
         minutesElement.textContent = "0";
+        secondsElement.textContent = "0";
         messageElement.textContent = "¡Ya el Evento Comenzo!";
         return;
     }
@@ -137,11 +139,12 @@ function updateCountdown() {
     const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
     daysElement.textContent = days;
     hoursElement.textContent = hours;
     minutesElement.textContent = minutes;
-
+    secondsElement.textContent = seconds;
 
     // Cambia el mensaje según el tiempo restante
     if (days <= 0) {

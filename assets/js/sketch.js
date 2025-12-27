@@ -80,6 +80,7 @@ async function cargarRegalos() {
 
             // 👉 ruta absoluta al backend
             const imagenUrl = `${regalo.enlace}`;
+            
 
             div.style.backgroundImage = `url('${imagenUrl}')`;
             
@@ -89,7 +90,10 @@ async function cargarRegalos() {
                         <div class="contenido-regalo">
                             <h4 class="titulo">${regalo.titulo}</h4>
 
-                            <p class="precio">$${regalo.valor}</p>
+                            <p class="precio">$${Number(regalo.valor).toLocaleString("es-CL", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            })}</p>
 
                             <p class="estado">${regalo.reservado_por}</p>
 
