@@ -201,7 +201,7 @@ body, html {
   .subtext { font-size: 1.5rem; }
   .faltapoco { font-size: 2rem; }
   .linea { width: 90px; }
-  .contador { gap: 20px;  }
+  .contador { gap: 20px; font-size: 3.2rem; }
   .contadorTexto { gap: 20px;}
 }
 
