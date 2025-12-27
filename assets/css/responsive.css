@@ -152,7 +152,7 @@ body, html {
 
 /* Contador estilo tarjetas */
 .contador {
-  margin: 0px;
+  margin: auto;
   display: flex;
   justify-content: center;
   gap: 25px;
@@ -201,8 +201,11 @@ body, html {
   .subtext { font-size: 1.5rem; }
   .faltapoco { font-size: 2rem; }
   .linea { width: 90px; }
-  .contador { gap: 20px; font-size: 3.2rem; }
+  .contador { gap: 20px; font-size: 2.5rem; width: 90%; height: 70px;}
   .contadorTexto { gap: 20px;}
+  #seconds{
+    width: 40px;
+  }
 }
 
 
