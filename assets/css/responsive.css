@@ -201,10 +201,11 @@ body, html {
   .subtext { font-size: 1.5rem; }
   .faltapoco { font-size: 2rem; }
   .linea { width: 90px; }
-  .contador { gap: 20px; font-size: 2.5rem; width: 90%; height: 70px;}
+  .contador { gap: 10px; font-size: 2.8rem; width: 80%; height: 70px; margin: 20px 36px 0 20px; }
   .contadorTexto { gap: 20px;}
   #seconds{
     width: 40px;
+    padding: auto;
   }
 }
 
