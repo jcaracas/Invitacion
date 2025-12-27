@@ -103,10 +103,9 @@ async function cargarRegalos() {
                         </div>
                     </div>
                     <div class="card-back">
-                        <h4 class="cancelar-seleccion" title="Presionar aqui para volver">Tu regalo es un gran aporte</h4>
-                        <p>
-                        Banco Falabella - Cuenta de Ahorros
-                        Nro. 1234567890 <br>a Nombre de Nahir Adrian 
+                        <h5 class="cancelar-seleccion" title="Presionar aqui para volver">Tu regalo es un gran aporte</h5>
+                        <p class="instruciones">
+                        BCI - Cta. Cte. <br>Nro. 777927429492 <br>Juan Carrasquero <br>Rut 27.429.492-2 <br>jjcoviol@gmail.com
                         <br>Deja el nombre del regalo que seleccionaste en el detalle.
                         </p>
                         <button class="btn-confirmar">Confirmar</button>

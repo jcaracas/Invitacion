@@ -166,6 +166,10 @@ body, html {
   width: 105px;
 }
 
+.instruciones {
+  font-family: parisienne, cursive;
+}
+
 .contadorTexto {
     display: flex;
   margin-top: 0px;
